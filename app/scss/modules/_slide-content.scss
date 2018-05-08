@@ -1,0 +1,11 @@
+.slide-content {
+    background: #78EAD3;
+    padding: 10px;
+    color:#333333;
+    @media screen and (max-width: 767px) {
+        min-height: 200px;
+    }
+    @media screen and (min-width: 768px) {
+        flex: 2 2;
+    }
+}

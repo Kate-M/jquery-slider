@@ -1,0 +1,22 @@
+@mixin center-all {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+@mixin center-x {
+    display: flex;
+    align-items: center;
+}
+@mixin center-y {
+    display: flex;
+    justify-content: center;
+}
+@mixin column {
+    display: flex;
+    flex-direction: column;
+}
+@mixin btn-hover($color) {
+    &:hover {
+        background:darken($color, 15%);
+    }
+}

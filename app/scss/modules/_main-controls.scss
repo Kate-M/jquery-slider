@@ -1,0 +1,75 @@
+.main-controls {
+    display: inline-block;
+    flex: 0 0 120px;
+    .list {
+        display: flex;
+        height: 100%;
+        @media screen and (min-width: 768px) {
+            flex-direction: column;
+        }
+    }
+    .item {
+        overflow: hidden;
+        margin-bottom: 10px;
+        @media screen and (min-width: 768px) {
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+        @media screen and (max-width: 767px) {
+            width: 33.3333%;
+            &:not(:last-child) {
+                margin-right: 10px;
+            }
+        }
+    }
+    .btn {
+        background: #36CAE8;
+        font-size: 1.4rem;
+        color:$color_white;
+        width: 100%;
+        height: 130px;
+        @include center-all;
+        flex-direction: column;
+        padding-bottom: 15px;
+        @include btn-hover(#36CAE8);
+        .btn-ico{
+            position: relative;
+            width: 70px;
+            height: 70px;
+            overflow: hidden;
+            &::before {
+                content: '';
+                font: {
+                    family: $font_ico;
+                    size: 6rem;
+                }
+                padding: 5px 0;
+                color:inherit;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                @include center-y;
+            }
+        }
+    }
+    .item1 .btn-ico{
+        &::before {
+            content: "\e902";
+        }
+    }
+    .item2 .btn-ico{
+        &::before {
+            content: "\e900";
+        }
+    }
+    .item3 .btn-ico{
+        &::before {
+            content: "\e901";
+        }
+    }
+    .btn-value {
+        width: 100%;
+    }
+}
