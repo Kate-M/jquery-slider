@@ -54,17 +54,17 @@
             }
         }
     }
-    .item1 .btn-ico{
+    .car .btn-ico{
         &::before {
             content: "\e902";
         }
     }
-    .item2 .btn-ico{
+    .movie .btn-ico{
         &::before {
             content: "\e900";
         }
     }
-    .item3 .btn-ico{
+    .location .btn-ico{
         &::before {
             content: "\e901";
         }
