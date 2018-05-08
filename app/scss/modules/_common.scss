@@ -1,0 +1,9 @@
+.slider {
+    display: flex;
+    align-items: stretch;
+    padding: 10px 0;
+    color: $color_white;
+    @media screen and (max-width: 767px) {
+        flex-direction: column;
+    }
+}

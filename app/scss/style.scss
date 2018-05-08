@@ -1,4 +1,12 @@
 @import '../../node_modules/reset-css/_reset';
+@import 'base/fonts';
+@import 'base/variable';
+@import 'base/common';
+@import 'base/mixins';
+@import 'modules/common';
+@import 'modules/main-controls';
+@import 'modules/content-controls';
+@import 'modules/slide-content';
 
 
 
