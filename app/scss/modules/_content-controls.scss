@@ -1,6 +1,6 @@
 .content-controls {
-    overflow: hidden;
     height: 410px;
+    // overflow: hidden;
     @media screen and (min-width: 768px) {
         flex: 2 2;
         margin: 0 10px;
