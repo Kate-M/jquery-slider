@@ -20,3 +20,6 @@
         background:darken($color, 15%);
     }
 }
+@mixin btn-active($color) {
+    background:darken($color, 25%);
+}

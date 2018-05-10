@@ -1,6 +1,4 @@
 .content-controls {
-    height: 410px;
-    // overflow: hidden;
     @media screen and (min-width: 768px) {
         flex: 2 2;
         margin: 0 10px;
@@ -21,7 +19,6 @@
             margin-bottom: 10px;
         }
         @media screen and (min-width: 768px) {
-            height: 25%;
             &:last-child {
                 margin-bottom: 0;
             }
