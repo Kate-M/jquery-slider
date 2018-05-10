@@ -9,33 +9,20 @@ let heightContainer = $contentControls.height();
 let slideHeight = heightContainer + marginList;
 let $mainBtn = $mainControls.find('.btn-main');
 
-export let onSlider = {
+export let onMainControls = {
 
     init() {
         $mainControls.find('.btn-main')
-            .on('click', this.switchAction.bind(this));
+            .on('click', this.setActive.bind(this));
     },
-    switchAction(event) {
+    setActive(event) {
         event.preventDefault();
         let $targetBtn = $(event.currentTarget);
         let targetCategory = $targetBtn.data('category');
-        switch (targetCategory) {
-            case 'car':
-                this.setActive($targetBtn, 0);
-                break;
-            case 'movie':
-                this.setActive($targetBtn, -slideHeight);
-                break;
-            case 'location':
-                this.setActive($targetBtn, -slideHeight * 2);
-                break;
-            default:
-                this.setActive($targetBtn, 0);
-        }
-    },
-    setActive(btn, margin) {
-        this.setActiveStyle(btn);
-        this.setActivePosition(margin);
+        let indexBtn = $targetBtn.parent().index();
+        let marginValue = -(slideHeight * indexBtn);
+        this.setActiveStyle($targetBtn);
+        this.setActivePosition(marginValue);
     },
     setActivePosition(marginConteiner) {
         $contentControls.animate({

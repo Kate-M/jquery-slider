@@ -115,7 +115,7 @@ var onContentControls = exports.onContentControls = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.onSlider = undefined;
+exports.onMainControls = undefined;
 
 var _variable = __webpack_require__(/*! ./variable */ "./app/js/variable.js");
 
@@ -124,31 +124,18 @@ var heightContainer = _variable.$contentControls.height();
 var slideHeight = heightContainer + marginList;
 var $mainBtn = _variable.$mainControls.find('.btn-main');
 
-var onSlider = exports.onSlider = {
+var onMainControls = exports.onMainControls = {
     init: function init() {
-        _variable.$mainControls.find('.btn-main').on('click', this.switchAction.bind(this));
+        _variable.$mainControls.find('.btn-main').on('click', this.setActive.bind(this));
     },
-    switchAction: function switchAction(event) {
+    setActive: function setActive(event) {
         event.preventDefault();
         var $targetBtn = $(event.currentTarget);
         var targetCategory = $targetBtn.data('category');
-        switch (targetCategory) {
-            case 'car':
-                this.setActive($targetBtn, 0);
-                break;
-            case 'movie':
-                this.setActive($targetBtn, -slideHeight);
-                break;
-            case 'location':
-                this.setActive($targetBtn, -slideHeight * 2);
-                break;
-            default:
-                this.setActive($targetBtn, 0);
-        }
-    },
-    setActive: function setActive(btn, margin) {
-        this.setActiveStyle(btn);
-        this.setActivePosition(margin);
+        var indexBtn = $targetBtn.parent().index();
+        var marginValue = -(slideHeight * indexBtn);
+        this.setActiveStyle($targetBtn);
+        this.setActivePosition(marginValue);
     },
     setActivePosition: function setActivePosition(marginConteiner) {
         _variable.$contentControls.animate({
@@ -182,7 +169,7 @@ var _mainControls = __webpack_require__(/*! ./main-controls */ "./app/js/main-co
 var _contentControls = __webpack_require__(/*! ./content-controls */ "./app/js/content-controls.js");
 
 (function () {
-    _mainControls.onSlider.init();
+    _mainControls.onMainControls.init();
     _contentControls.onContentControls.init();
 })();
 
