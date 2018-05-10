@@ -121,6 +121,7 @@ var onSlider = exports.onSlider = {
         event.preventDefault();
         var $targetBtn = $(event.currentTarget);
         var targetCategory = $targetBtn.data('category');
+        // this.holdActiveButton($mainBtns, $targetBtn);
         var currentIndex = $targetBtn.parent().index();
         this.setActiveBtn($mainBtns, $targetBtn);
         this.setActiveContentList($contentList, currentIndex);
@@ -134,7 +135,7 @@ var onSlider = exports.onSlider = {
         this.setActiveBtn($contentBtns, $targetContentBtn);
     },
     setDefaultParam: function setDefaultParam() {
-        $mainControls.find('.item').first().find($mainBtns).addClass('active');
+        $mainControls.find('.item').first().find($mainBtns).addClass('active').attr('disabled', true);
         $contentList.first().addClass('active');
         this.setDefaultContent($contentList);
     },
@@ -146,6 +147,10 @@ var onSlider = exports.onSlider = {
     setActiveBtn: function setActiveBtn(elements, target) {
         this.clearActive(elements);
         target.addClass('active');
+        elements.filter(function (i, el) {
+            return $(el).prop('disabled') === true;
+        }).attr('disabled', false);
+        target.attr('disabled', true);
     },
     setActiveContentList: function setActiveContentList(elements, index) {
         this.clearActive(elements);
