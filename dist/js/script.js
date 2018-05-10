@@ -103,28 +103,23 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var $mainControls = $('.main-controls');
-var $mainListHeight = $mainControls.find('.list').height();
 var $contentControls = $('.content-controls');
-var $contentList = $contentControls.find('.list');
-var marginList = parseInt($(contentControls).children().first().css('marginBottom'), 10);
-var heightContainer = $contentControls.height();
-var slideHeight = heightContainer + marginList;
 var $mainBtn = $mainControls.find('.btn-main');
+var slideHeight = $contentControls.find('.list:first-child').outerHeight(true);
 
-$contentControls.height($mainListHeight);
+$contentControls.height($mainControls.find('.list').height());
 
 var onSlider = exports.onSlider = {
     init: function init() {
-        $mainControls.find('.btn-main').on('click', this.setActive.bind(this));
+        $mainBtn.on('click', this.setActive.bind(this));
     },
     setActive: function setActive(event) {
         event.preventDefault();
         var $targetBtn = $(event.currentTarget);
         var targetCategory = $targetBtn.data('category');
         var indexBtn = $targetBtn.parent().index();
-        var marginValue = -(slideHeight * indexBtn);
         this.setActiveStyle($targetBtn);
-        this.setActivePosition(marginValue);
+        this.setActivePosition(-(slideHeight * indexBtn));
     },
     setActivePosition: function setActivePosition(marginConteiner) {
         $contentControls.animate({
@@ -132,10 +127,9 @@ var onSlider = exports.onSlider = {
         });
     },
     setActiveStyle: function setActiveStyle(targetBtn) {
-        var currentActive = $mainBtn.filter(function (i, el) {
+        $mainBtn.filter(function (i, el) {
             return $(el).attr('class').indexOf('active') > -1;
-        });
-        currentActive.removeClass('active');
+        }).removeClass('active');
         targetBtn.addClass('active');
     }
 };
