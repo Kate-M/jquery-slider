@@ -82,17 +82,9 @@ img {
     min-height: 100%;
     background: $color_main;
     padding: 10px 0;
+    min-width: 600px;
 }
 .container {
-    width: 100%;
+    max-width: 720px;
     margin: 0 auto;
-    padding: 0 20px;
-    @media screen and (min-width: 480px) {
-        max-width: 425px;
-        padding: 0;
-    }
-    @media screen and (min-width: 768px) {
-        max-width: 720px;
-        padding: 0;
-    }
 }

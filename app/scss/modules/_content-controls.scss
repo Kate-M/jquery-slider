@@ -1,12 +1,6 @@
 .content-controls {
-    @media screen and (min-width: 768px) {
-        flex: 2 2;
-        margin: 0 10px;
-    }
-    @media screen and (max-width: 767px) {
-        max-height: 310px;
-        margin-bottom: 10px;
-    }
+    flex: 2 2;
+    margin: 0 10px;
     .list {
         @include column;
         height: 100%;
@@ -18,11 +12,6 @@
         &:not(:last-child) {
             margin-bottom: 10px;
         }
-        @media screen and (min-width: 768px) {
-            &:last-child {
-                margin-bottom: 0;
-            }
-        }
         @include center-all;
     }
     .btn {
@@ -30,9 +19,6 @@
         height: 100%;
         background: #F88451;
         @include btn-hover(#F88451);
-        @media screen and (max-width: 767px) {
-            min-height: 70px;
-        }
     }
 
 }
