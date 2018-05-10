@@ -2,7 +2,8 @@
     flex: 2 2;
     margin: 0 10px;
     .list {
-        @include column;
+        display: flex;
+        flex-wrap: wrap;
         height: 100%;
         &:not(:last-child) {
             margin-bottom: 10px;
@@ -12,6 +13,7 @@
         &:not(:last-child) {
             margin-bottom: 10px;
         }
+        width:100%;
         @include center-all;
     }
     .btn {

@@ -71,89 +71,6 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./app/js/content-controls.js":
-/*!************************************!*\
-  !*** ./app/js/content-controls.js ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.onContentControls = undefined;
-
-var _variable = __webpack_require__(/*! ./variable */ "./app/js/variable.js");
-
-var onContentControls = exports.onContentControls = {
-    init: function init() {
-        _variable.$contentControls.height(_variable.$mainListHeight);
-        _variable.$contentList.each(function (i, el) {
-            var items = $(el).find('.item');
-            var itemsHeight = items.length;
-            items.height(100 / itemsHeight + '%');
-        });
-    }
-};
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
-
-/***/ }),
-
-/***/ "./app/js/main-controls.js":
-/*!*********************************!*\
-  !*** ./app/js/main-controls.js ***!
-  \*********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.onMainControls = undefined;
-
-var _variable = __webpack_require__(/*! ./variable */ "./app/js/variable.js");
-
-var marginList = parseInt(_variable.$contentControls.children().first().css('marginBottom'), 10);
-var heightContainer = _variable.$contentControls.height();
-var slideHeight = heightContainer + marginList;
-var $mainBtn = _variable.$mainControls.find('.btn-main');
-
-var onMainControls = exports.onMainControls = {
-    init: function init() {
-        _variable.$mainControls.find('.btn-main').on('click', this.setActive.bind(this));
-    },
-    setActive: function setActive(event) {
-        event.preventDefault();
-        var $targetBtn = $(event.currentTarget);
-        var targetCategory = $targetBtn.data('category');
-        var indexBtn = $targetBtn.parent().index();
-        var marginValue = -(slideHeight * indexBtn);
-        this.setActiveStyle($targetBtn);
-        this.setActivePosition(marginValue);
-    },
-    setActivePosition: function setActivePosition(marginConteiner) {
-        _variable.$contentControls.animate({
-            'margin-top': marginConteiner
-        });
-    },
-    setActiveStyle: function setActiveStyle(targetBtn) {
-        var currentActive = $mainBtn.filter(function (i, el) {
-            return $(el).attr('class').indexOf('active') > -1;
-        });
-        currentActive.removeClass('active');
-        targetBtn.addClass('active');
-    }
-};
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
-
-/***/ }),
-
 /***/ "./app/js/script.js":
 /*!**************************!*\
   !*** ./app/js/script.js ***!
@@ -164,21 +81,18 @@ var onMainControls = exports.onMainControls = {
 "use strict";
 
 
-var _mainControls = __webpack_require__(/*! ./main-controls */ "./app/js/main-controls.js");
-
-var _contentControls = __webpack_require__(/*! ./content-controls */ "./app/js/content-controls.js");
+var _slider = __webpack_require__(/*! ./slider */ "./app/js/slider.js");
 
 (function () {
-    _mainControls.onMainControls.init();
-    _contentControls.onContentControls.init();
+    _slider.onSlider.init();
 })();
 
 /***/ }),
 
-/***/ "./app/js/variable.js":
-/*!****************************!*\
-  !*** ./app/js/variable.js ***!
-  \****************************/
+/***/ "./app/js/slider.js":
+/*!**************************!*\
+  !*** ./app/js/slider.js ***!
+  \**************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -192,11 +106,39 @@ var $mainControls = $('.main-controls');
 var $mainListHeight = $mainControls.find('.list').height();
 var $contentControls = $('.content-controls');
 var $contentList = $contentControls.find('.list');
+var marginList = parseInt($(contentControls).children().first().css('marginBottom'), 10);
+var heightContainer = $contentControls.height();
+var slideHeight = heightContainer + marginList;
+var $mainBtn = $mainControls.find('.btn-main');
 
-exports.$mainControls = $mainControls;
-exports.$mainListHeight = $mainListHeight;
-exports.$contentControls = $contentControls;
-exports.$contentList = $contentList;
+$contentControls.height($mainListHeight);
+
+var onSlider = exports.onSlider = {
+    init: function init() {
+        $mainControls.find('.btn-main').on('click', this.setActive.bind(this));
+    },
+    setActive: function setActive(event) {
+        event.preventDefault();
+        var $targetBtn = $(event.currentTarget);
+        var targetCategory = $targetBtn.data('category');
+        var indexBtn = $targetBtn.parent().index();
+        var marginValue = -(slideHeight * indexBtn);
+        this.setActiveStyle($targetBtn);
+        this.setActivePosition(marginValue);
+    },
+    setActivePosition: function setActivePosition(marginConteiner) {
+        $contentControls.animate({
+            'margin-top': marginConteiner
+        });
+    },
+    setActiveStyle: function setActiveStyle(targetBtn) {
+        var currentActive = $mainBtn.filter(function (i, el) {
+            return $(el).attr('class').indexOf('active') > -1;
+        });
+        currentActive.removeClass('active');
+        targetBtn.addClass('active');
+    }
+};
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
 
 /***/ }),

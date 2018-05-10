@@ -1,6 +1,8 @@
-import { $mainControls, $contentControls } from './variable';
-
-let marginList = parseInt($contentControls
+let $mainControls = $('.main-controls');
+let $mainListHeight = $mainControls.find('.list').height();
+let $contentControls = $('.content-controls');
+let $contentList = $contentControls.find('.list');
+let marginList = parseInt($(contentControls)
     .children()
     .first()
     .css('marginBottom'),
@@ -9,7 +11,9 @@ let heightContainer = $contentControls.height();
 let slideHeight = heightContainer + marginList;
 let $mainBtn = $mainControls.find('.btn-main');
 
-export let onMainControls = {
+$contentControls.height($mainListHeight);
+
+export let onSlider = {
 
     init() {
         $mainControls.find('.btn-main')
