@@ -3,7 +3,4 @@
     align-items: stretch;
     color: $color_white;
     overflow: hidden;
-    @media screen and (max-width: 767px) {
-        flex-direction: column;
-    }
 }
