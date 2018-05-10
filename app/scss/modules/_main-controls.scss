@@ -53,6 +53,9 @@
                 @include center-y;
             }
         }
+        &.active {
+            @include btn-active(#36CAE8);
+        }
     }
     .car .btn-ico{
         &::before {
