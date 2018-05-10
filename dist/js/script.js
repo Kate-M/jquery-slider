@@ -106,7 +106,7 @@ var $mainControls = $('.main-controls');
 var $contentControls = $('.content-controls');
 var $contentList = $('.content-controls').find('.list');
 var $mainBtns = $mainControls.find('.btn-main');
-var $contentBtn = $contentControls.find('.btn-content');
+var $contentBtns = $contentControls.find('.btn-content');
 var slideHeight = $contentControls.find('.list:first-child').outerHeight(true);
 
 $contentControls.height($mainControls.find('.list').height());
@@ -114,8 +114,8 @@ $contentControls.height($mainControls.find('.list').height());
 var onSlider = exports.onSlider = {
     init: function init() {
         $mainBtns.on('click', this.setActiveSlide.bind(this));
-        $contentBtn.on('click', this.setContent.bind(this));
-        this.setDefaultContent($contentList);
+        $contentBtns.on('click', this.setContent.bind(this));
+        this.setDefaultParam();
     },
     setActiveSlide: function setActiveSlide(event) {
         event.preventDefault();
@@ -126,37 +126,42 @@ var onSlider = exports.onSlider = {
         this.setActiveContentList($contentList, currentIndex);
         this.setActivePosition(-(slideHeight * currentIndex));
         this.setDefaultContent($contentList);
-        this.clearActiveClass($contentBtn);
     },
     setContent: function setContent(event) {
         event.preventDefault();
         var $targetContentBtn = $(event.currentTarget);
         $('.slide-content').text($targetContentBtn.text());
-        this.setActiveBtn($contentBtn, $targetContentBtn);
+        this.setActiveBtn($contentBtns, $targetContentBtn);
+    },
+    setDefaultParam: function setDefaultParam() {
+        $mainControls.find('.item').first().find($mainBtns).addClass('active');
+        $contentList.first().addClass('active');
+        this.setDefaultContent($contentList);
     },
     setDefaultContent: function setDefaultContent(element) {
-        var currentContent = this.getActiveElement(element).find('.item:first-child').text();
-        $('.slide-content').text(currentContent);
+        var currentContent = this.getActiveElement(element).find('.item:first-child').find($contentBtns);
+        $('.slide-content').text(currentContent.text());
+        this.setActiveBtn($contentBtns, currentContent);
+    },
+    setActiveBtn: function setActiveBtn(elements, target) {
+        this.clearActive(elements);
+        target.addClass('active');
+    },
+    setActiveContentList: function setActiveContentList(elements, index) {
+        this.clearActive(elements);
+        elements.eq(index).addClass('active');
+    },
+    clearActive: function clearActive(elements) {
+        this.getActiveElement(elements).removeClass('active');
+    },
+    getActiveElement: function getActiveElement(elements) {
+        return elements.filter(function (i, el) {
+            return $(el).attr('class').indexOf('active') > -1;
+        });
     },
     setActivePosition: function setActivePosition(marginConteiner) {
         $contentControls.animate({
             'margin-top': marginConteiner
-        });
-    },
-    setActiveBtn: function setActiveBtn(element, target) {
-        this.clearActiveClass(element);
-        target.addClass('active');
-    },
-    setActiveContentList: function setActiveContentList(element, index) {
-        this.clearActiveClass(element);
-        element.eq(index).addClass('active');
-    },
-    clearActiveClass: function clearActiveClass(element) {
-        this.getActiveElement(element).removeClass('active');
-    },
-    getActiveElement: function getActiveElement(element) {
-        return element.filter(function (i, el) {
-            return $(el).attr('class').indexOf('active') > -1;
         });
     }
 };

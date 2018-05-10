@@ -17,7 +17,7 @@
 }
 @mixin btn-hover($color) {
     &:hover {
-        background:darken($color, 15%);
+        background:darken($color, 12%);
     }
 }
 @mixin btn-active($color) {
