@@ -1,8 +1,6 @@
-import { onMainControls } from './main-controls';
-import { onContentControls } from './content-controls';
+import { onSlider } from './slider';
 
 (function () {
-    onMainControls.init();
-    onContentControls.init();
+    onSlider.init();
 }());
 
