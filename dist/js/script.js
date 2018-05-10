@@ -104,33 +104,60 @@ Object.defineProperty(exports, "__esModule", {
 });
 var $mainControls = $('.main-controls');
 var $contentControls = $('.content-controls');
-var $mainBtn = $mainControls.find('.btn-main');
+var $contentList = $('.content-controls').find('.list');
+var $mainBtns = $mainControls.find('.btn-main');
+var $contentBtn = $contentControls.find('.btn-content');
 var slideHeight = $contentControls.find('.list:first-child').outerHeight(true);
 
 $contentControls.height($mainControls.find('.list').height());
 
 var onSlider = exports.onSlider = {
     init: function init() {
-        $mainBtn.on('click', this.setActive.bind(this));
+        $mainBtns.on('click', this.setActiveSlide.bind(this));
+        $contentBtn.on('click', this.setContent.bind(this));
+        this.setDefaultContent($contentList);
     },
-    setActive: function setActive(event) {
+    setActiveSlide: function setActiveSlide(event) {
         event.preventDefault();
         var $targetBtn = $(event.currentTarget);
         var targetCategory = $targetBtn.data('category');
-        var indexBtn = $targetBtn.parent().index();
-        this.setActiveStyle($targetBtn);
-        this.setActivePosition(-(slideHeight * indexBtn));
+        var currentIndex = $targetBtn.parent().index();
+        this.setActiveBtn($mainBtns, $targetBtn);
+        this.setActiveContentList($contentList, currentIndex);
+        this.setActivePosition(-(slideHeight * currentIndex));
+        this.setDefaultContent($contentList);
+        this.clearActiveClass($contentBtn);
+    },
+    setContent: function setContent(event) {
+        event.preventDefault();
+        var $targetContentBtn = $(event.currentTarget);
+        $('.slide-content').text($targetContentBtn.text());
+        this.setActiveBtn($contentBtn, $targetContentBtn);
+    },
+    setDefaultContent: function setDefaultContent(element) {
+        var currentContent = this.getActiveElement(element).find('.item:first-child').text();
+        $('.slide-content').text(currentContent);
     },
     setActivePosition: function setActivePosition(marginConteiner) {
         $contentControls.animate({
             'margin-top': marginConteiner
         });
     },
-    setActiveStyle: function setActiveStyle(targetBtn) {
-        $mainBtn.filter(function (i, el) {
+    setActiveBtn: function setActiveBtn(element, target) {
+        this.clearActiveClass(element);
+        target.addClass('active');
+    },
+    setActiveContentList: function setActiveContentList(element, index) {
+        this.clearActiveClass(element);
+        element.eq(index).addClass('active');
+    },
+    clearActiveClass: function clearActiveClass(element) {
+        this.getActiveElement(element).removeClass('active');
+    },
+    getActiveElement: function getActiveElement(element) {
+        return element.filter(function (i, el) {
             return $(el).attr('class').indexOf('active') > -1;
-        }).removeClass('active');
-        targetBtn.addClass('active');
+        });
     }
 };
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
