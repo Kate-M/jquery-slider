@@ -122,6 +122,7 @@ var Slider = exports.Slider = function () {
         this.mainList = this.root.find(this.mainControls).find('ul.list');
         this.mainBtns = this.root.find('button.btn-main');
         this.contentBtns = this.root.find('button.btn-content');
+        this.sliderContent = this.root.find('div.slide-content');
 
         this.setActiveSlide = this.setActiveSlide.bind(this);
         this.setContent = this.setContent.bind(this);
@@ -151,7 +152,7 @@ var Slider = exports.Slider = function () {
         value: function setContent(event) {
             event.preventDefault();
             var $targetContentBtn = $(event.currentTarget);
-            $('.slide-content').text($targetContentBtn.text());
+            this.sliderContent.text($targetContentBtn.text());
             this.setActiveBtn(this.contentBtns, $targetContentBtn);
         }
     }, {
@@ -170,7 +171,7 @@ var Slider = exports.Slider = function () {
         key: 'setDefaultContent',
         value: function setDefaultContent(element) {
             var currentContent = this.getActiveElement(element).find('li.item:first-child').find(this.contentBtns);
-            $('div.slide-content').text(currentContent.text());
+            this.sliderContent.text(currentContent.text());
             this.setActiveBtn(this.contentBtns, currentContent);
         }
     }, {
@@ -213,7 +214,7 @@ var Slider = exports.Slider = function () {
     return Slider;
 }();
 
-var slider = exports.slider = new Slider($('.slider'));
+var slider = exports.slider = new Slider($('.slider-action'));
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
 
 /***/ }),

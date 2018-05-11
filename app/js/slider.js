@@ -7,6 +7,7 @@ export class Slider {
         this.mainList = this.root.find(this.mainControls).find('ul.list');
         this.mainBtns = this.root.find('button.btn-main');
         this.contentBtns = this.root.find('button.btn-content');
+        this.sliderContent = this.root.find('div.slide-content');
         
         this.setActiveSlide = this.setActiveSlide.bind(this);
         this.setContent = this.setContent.bind(this);
@@ -29,7 +30,7 @@ export class Slider {
     setContent(event) {
         event.preventDefault();
         let $targetContentBtn = $(event.currentTarget);
-        $('.slide-content').text($targetContentBtn.text());
+        this.sliderContent.text($targetContentBtn.text());
         this.setActiveBtn(this.contentBtns, $targetContentBtn);
     }
     setDefaultParam() {
@@ -48,7 +49,7 @@ export class Slider {
     setDefaultContent(element) {
         let currentContent = this.getActiveElement(element)
             .find('li.item:first-child').find(this.contentBtns);
-        $('div.slide-content').text(currentContent.text());
+        this.sliderContent.text(currentContent.text());
         this.setActiveBtn(this.contentBtns, currentContent);
     }
     setActiveBtn(elements, target) {
@@ -76,4 +77,4 @@ export class Slider {
     }
 }
 
-export const slider = new Slider($('.slider'));
+export const slider = new Slider($('.slider-action'));
