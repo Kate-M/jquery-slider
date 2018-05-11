@@ -19,50 +19,48 @@
         color:$color_white;
         width: 100%;
         height: 130px;
-        @include center-all;
+        @include center-x;
+        justify-content: flex-end;
         flex-direction: column;
-        padding-bottom: 15px;
+        padding: 10px 0;
         @include btn-hover(#36CAE8);
-        .btn-ico{
-            position: relative;
-            width: 70px;
-            height: 70px;
-            overflow: hidden;
-            &::before {
-                content: '';
-                font: {
-                    family: $font_ico;
-                    size: 6rem;
-                }
-                padding: 5px 0;
-                color:inherit;
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                @include center-y;
+        position: relative;
+        overflow: hidden;
+        &::before {
+            content: '';
+            font: {
+                family: $font_ico;
+                size: 6rem;
             }
+            padding: 5px 0;
+            color:inherit;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            @include center-y;
+            height: 70px;
         }
         &.active {
             @include btn-active(#36CAE8);
         }
     }
-    .car .btn-ico{
+    .car .btn{
         &::before {
             content: "\e902";
         }
     }
-    .movie .btn-ico{
+    .movie .btn{
         &::before {
             content: "\e900";
         }
     }
-    .location .btn-ico{
+    .location .btn{
         &::before {
             content: "\e901";
         }
     }
-    .btn-value {
-        width: 100%;
-    }
+    // .btn-value {
+    //     width: 100%;
+    // }
 }

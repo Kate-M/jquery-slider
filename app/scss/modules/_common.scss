@@ -1,6 +1,9 @@
 .slider {
     align-items: stretch;
     color: $color_white;
+    display: flex;
     overflow: hidden;
-    display: none;
+    .slide {
+        overflow: hidden;
+    }
 }

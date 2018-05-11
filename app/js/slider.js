@@ -5,36 +5,27 @@ export class Slider {
         this.contentControls = this.root.find('div.content-controls');
         this.contentList = this.contentControls.find('ul.list');
         this.mainList = this.root.find(this.mainControls).find('ul.list');
-        this.mainBtns = this.root.find('button.btn-main');
-        this.contentBtns = this.root.find('button.btn-content');
         this.sliderContent = this.root.find('div.slide');
-
-        this.setActiveSlide = this.setActiveSlide.bind(this);
-        this.setContent = this.setContent.bind(this);
     }
     init() {
-        this.mainBtns.on('click', this.setActiveSlide);
-        this.contentBtns.on('click', this.setContent);
+        this.mainControls.on('click', this.setActiveSlide.bind(this));
+        this.contentControls.on('click', this.setContent.bind(this));
         this.setDefaultParam();
     }
     setActiveSlide(event) {
         event.preventDefault();
-        let $targetBtn = $(event.currentTarget);
-        let targetCategory = $targetBtn.data('category');
+        let $targetBtn = $(event.target);
         let currentIndex = $targetBtn.parent().index();
-        this.setActiveBtn(this.mainBtns, $targetBtn);
+        this.setActiveBtn(this.mainControls, $targetBtn);
         this.setActiveContentList(currentIndex);
         this.setContentPosition(-(this.slideHeight * currentIndex));
         this.setDefaultContent(this.contentList);
     }
     setDefaultParam() {
-        this.root.css({
-            display: 'flex'
-        });
         this.contentControls.height(this.mainList.height());
         this.slideHeight = this.contentControls.children().first()
             .outerHeight(true);
-        this.mainControls.find('li.item').first().find(this.mainBtns)
+        this.mainControls.find('li.item:first-child .btn')
             .addClass('active')
             .attr('disabled', true);
         this.contentList.first().addClass('active');
@@ -42,22 +33,23 @@ export class Slider {
     }
     setDefaultContent(element) {
         let currentContent = this.getActiveElement(element)
-            .find('li.item:first-child').find(this.contentBtns);
+            .find('li.item:first-child .btn');
         this.sliderContent.html(`<div class="item">${currentContent.text()}</div>`);    
-        this.setActiveBtn(this.contentBtns, currentContent);
+        this.setActiveBtn(this.contentControls, currentContent);
     }
     setContent(event) {
         event.preventDefault();
-        let $targetContentBtn = $(event.currentTarget);
+        let $targetContentBtn = $(event.target);
         let currentSlide = $(`<div class="item">${$targetContentBtn.text()}</div>`)
             .appendTo(this.sliderContent);
         this.setSlidePosition(currentSlide.prev());
-        this.setActiveBtn(this.contentBtns, $targetContentBtn);
+        this.setActiveBtn(this.contentControls, $targetContentBtn);
     }
     setActiveBtn(elements, target) {
-        this.clearActive(elements);
+        let $btnList = elements.find('.btn');
+        this.clearActive($btnList);
         target.addClass('active');
-        elements.filter((i, el) => $(el).prop('disabled') === true)
+        $btnList.filter((i, el) => $(el).prop('disabled') === true)
             .attr('disabled', false);
         target.attr('disabled', true);
     }
@@ -85,4 +77,3 @@ export class Slider {
         });
     }
 }
-export const slider = new Slider($('.slider-action'));
