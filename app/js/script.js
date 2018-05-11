@@ -1,7 +1,9 @@
-import { slider } from './slider';
+import { Slider } from './slider';
+
+let slider = new Slider($('.slider-action'));
 
 (function () {
-    if (slider.root.length) {
+    if ($('*').is(slider.root)) {
         slider.init();
     } else { console.log('Slider not exist'); }
 }());

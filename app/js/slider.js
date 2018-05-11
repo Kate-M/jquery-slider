@@ -5,61 +5,53 @@ export class Slider {
         this.contentControls = this.root.find('div.content-controls');
         this.contentList = this.contentControls.find('ul.list');
         this.mainList = this.root.find(this.mainControls).find('ul.list');
-        this.mainBtns = this.root.find('button.btn-main');
-        this.contentBtns = this.root.find('button.btn-content');
         this.sliderContent = this.root.find('div.slide');
-
-        this.setActiveSlide = this.setActiveSlide.bind(this);
-        this.setContent = this.setContent.bind(this);
     }
     init() {
-        this.mainBtns.on('click', this.setActiveSlide);
-        this.contentBtns.on('click', this.setContent);
+        this.mainControls.on('click', this.setActiveSlide.bind(this));
+        this.contentControls.on('click', this.setContent.bind(this));
         this.setDefaultParam();
     }
     setActiveSlide(event) {
         event.preventDefault();
-        let $targetBtn = $(event.currentTarget);
-        let targetCategory = $targetBtn.data('category');
+        $(event.currentTarget).unbind('click');
+        let $targetBtn = $(event.target);
         let currentIndex = $targetBtn.parent().index();
-        this.setActiveBtn(this.mainBtns, $targetBtn);
+        this.setActiveBtn(this.mainControls, $targetBtn);
         this.setActiveContentList(currentIndex);
         this.setContentPosition(-(this.slideHeight * currentIndex));
         this.setDefaultContent(this.contentList);
     }
     setDefaultParam() {
-        this.root.css({
-            display: 'flex'
-        });
         this.contentControls.height(this.mainList.height());
         this.slideHeight = this.contentControls.children().first()
             .outerHeight(true);
-        this.mainControls.find('li.item').first().find(this.mainBtns)
-            .addClass('active')
-            .attr('disabled', true);
+        this.mainControls.find('li.item:first-child .btn')
+            .addClass('active');
         this.contentList.first().addClass('active');
         this.setDefaultContent(this.contentList);
     }
     setDefaultContent(element) {
         let currentContent = this.getActiveElement(element)
-            .find('li.item:first-child').find(this.contentBtns);
-        this.sliderContent.html(`<div class="item">${currentContent.text()}</div>`);    
-        this.setActiveBtn(this.contentBtns, currentContent);
+            .find('li.item:first-child .btn');
+        this.sliderContent.html(`<div class="item">${currentContent.text()}</div>`);
+        this.setActiveBtn(this.contentControls, currentContent);
     }
     setContent(event) {
         event.preventDefault();
-        let $targetContentBtn = $(event.currentTarget);
-        let currentSlide = $(`<div class="item">${$targetContentBtn.text()}</div>`)
-            .appendTo(this.sliderContent);
-        this.setSlidePosition(currentSlide.prev());
-        this.setActiveBtn(this.contentBtns, $targetContentBtn);
+        $(event.currentTarget).unbind('click');
+        let $targetContentBtn = $(event.target);
+        if (!$targetContentBtn.hasClass('active')) {
+            this.currentSlide = $(`<div class="item">${$targetContentBtn.text()}</div>`)
+                .appendTo(this.sliderContent).prev();
+        }
+        this.setSlidePosition(this.currentSlide);
+        this.setActiveBtn(this.contentControls, $targetContentBtn);
     }
     setActiveBtn(elements, target) {
-        this.clearActive(elements);
+        let $btnList = elements.find('.btn');
+        this.clearActive($btnList);
         target.addClass('active');
-        elements.filter((i, el) => $(el).prop('disabled') === true)
-            .attr('disabled', false);
-        target.attr('disabled', true);
     }
     setActiveContentList(index) {
         this.clearActive(this.contentList);
@@ -75,14 +67,16 @@ export class Slider {
     setContentPosition(marginContainer) {
         this.contentControls.animate({
             'margin-top': marginContainer
-        });
+        }, () =>
+            this.mainControls.on('click', this.setActiveSlide.bind(this))
+        );
     }
     setSlidePosition(slide) {
         slide.animate({
             'margin-left': '-100%'
         }, () => {
             slide.remove();
+            this.contentControls.on('click', this.setContent.bind(this));
         });
     }
 }
-export const slider = new Slider($('.slider-action'));
