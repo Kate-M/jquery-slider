@@ -1,6 +1,8 @@
-import { onSlider } from './slider';
+import { slider } from './slider';
 
 (function () {
-    onSlider.init();
+    if (slider.root.length) {
+        slider.init();
+    } else { console.log('Slider not exist'); }
 }());
 

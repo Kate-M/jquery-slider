@@ -84,7 +84,11 @@
 var _slider = __webpack_require__(/*! ./slider */ "./app/js/slider.js");
 
 (function () {
-    _slider.onSlider.init();
+    if (_slider.slider.root.length) {
+        _slider.slider.init();
+    } else {
+        console.log('Slider not exist');
+    }
 })();
 
 /***/ }),
@@ -102,74 +106,115 @@ var _slider = __webpack_require__(/*! ./slider */ "./app/js/slider.js");
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var $mainControls = $('.main-controls');
-var $contentControls = $('.content-controls');
-var $contentList = $('.content-controls').find('.list');
-var $mainBtns = $mainControls.find('.btn-main');
-var $contentBtns = $contentControls.find('.btn-content');
-var slideHeight = $contentControls.find('.list:first-child').outerHeight(true);
 
-$contentControls.height($mainControls.find('.list').height());
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var onSlider = exports.onSlider = {
-    init: function init() {
-        $mainBtns.on('click', this.setActiveSlide.bind(this));
-        $contentBtns.on('click', this.setContent.bind(this));
-        this.setDefaultParam();
-    },
-    setActiveSlide: function setActiveSlide(event) {
-        event.preventDefault();
-        var $targetBtn = $(event.currentTarget);
-        var targetCategory = $targetBtn.data('category');
-        // this.holdActiveButton($mainBtns, $targetBtn);
-        var currentIndex = $targetBtn.parent().index();
-        this.setActiveBtn($mainBtns, $targetBtn);
-        this.setActiveContentList($contentList, currentIndex);
-        this.setActivePosition(-(slideHeight * currentIndex));
-        this.setDefaultContent($contentList);
-    },
-    setContent: function setContent(event) {
-        event.preventDefault();
-        var $targetContentBtn = $(event.currentTarget);
-        $('.slide-content').text($targetContentBtn.text());
-        this.setActiveBtn($contentBtns, $targetContentBtn);
-    },
-    setDefaultParam: function setDefaultParam() {
-        $mainControls.find('.item').first().find($mainBtns).addClass('active').attr('disabled', true);
-        $contentList.first().addClass('active');
-        this.setDefaultContent($contentList);
-    },
-    setDefaultContent: function setDefaultContent(element) {
-        var currentContent = this.getActiveElement(element).find('.item:first-child').find($contentBtns);
-        $('.slide-content').text(currentContent.text());
-        this.setActiveBtn($contentBtns, currentContent);
-    },
-    setActiveBtn: function setActiveBtn(elements, target) {
-        this.clearActive(elements);
-        target.addClass('active');
-        elements.filter(function (i, el) {
-            return $(el).prop('disabled') === true;
-        }).attr('disabled', false);
-        target.attr('disabled', true);
-    },
-    setActiveContentList: function setActiveContentList(elements, index) {
-        this.clearActive(elements);
-        elements.eq(index).addClass('active');
-    },
-    clearActive: function clearActive(elements) {
-        this.getActiveElement(elements).removeClass('active');
-    },
-    getActiveElement: function getActiveElement(elements) {
-        return elements.filter(function (i, el) {
-            return $(el).attr('class').indexOf('active') > -1;
-        });
-    },
-    setActivePosition: function setActivePosition(marginConteiner) {
-        $contentControls.animate({
-            'margin-top': marginConteiner
-        });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Slider = exports.Slider = function () {
+    function Slider(rootElement) {
+        _classCallCheck(this, Slider);
+
+        this.root = rootElement;
+        this.mainControls = this.root.find('div.main-controls');
+        this.contentControls = this.root.find('div.content-controls');
+        this.contentList = this.contentControls.find('ul.list');
+        this.mainList = this.root.find(this.mainControls).find('ul.list');
+        this.mainBtns = this.root.find('button.btn-main');
+        this.contentBtns = this.root.find('button.btn-content');
+        this.sliderContent = this.root.find('div.slide-content');
+
+        this.setActiveSlide = this.setActiveSlide.bind(this);
+        this.setContent = this.setContent.bind(this);
     }
-};
+
+    _createClass(Slider, [{
+        key: 'init',
+        value: function init() {
+            this.mainBtns.on('click', this.setActiveSlide);
+            this.contentBtns.on('click', this.setContent);
+            this.setDefaultParam();
+        }
+    }, {
+        key: 'setActiveSlide',
+        value: function setActiveSlide(event) {
+            event.preventDefault();
+            var $targetBtn = $(event.currentTarget);
+            var targetCategory = $targetBtn.data('category');
+            var currentIndex = $targetBtn.parent().index();
+            this.setActiveBtn(this.mainBtns, $targetBtn);
+            this.setActiveContentList(currentIndex);
+            this.setActivePosition(-(this.slideHeight * currentIndex));
+            this.setDefaultContent(this.contentList);
+        }
+    }, {
+        key: 'setContent',
+        value: function setContent(event) {
+            event.preventDefault();
+            var $targetContentBtn = $(event.currentTarget);
+            this.sliderContent.text($targetContentBtn.text());
+            this.setActiveBtn(this.contentBtns, $targetContentBtn);
+        }
+    }, {
+        key: 'setDefaultParam',
+        value: function setDefaultParam() {
+            this.root.css({
+                display: 'flex'
+            });
+            this.contentControls.height(this.mainList.height());
+            this.slideHeight = this.contentControls.children().first().outerHeight(true);
+            this.mainControls.find('li.item').first().find(this.mainBtns).addClass('active').attr('disabled', true);
+            this.contentList.first().addClass('active');
+            this.setDefaultContent(this.contentList);
+        }
+    }, {
+        key: 'setDefaultContent',
+        value: function setDefaultContent(element) {
+            var currentContent = this.getActiveElement(element).find('li.item:first-child').find(this.contentBtns);
+            this.sliderContent.text(currentContent.text());
+            this.setActiveBtn(this.contentBtns, currentContent);
+        }
+    }, {
+        key: 'setActiveBtn',
+        value: function setActiveBtn(elements, target) {
+            this.clearActive(elements);
+            target.addClass('active');
+            elements.filter(function (i, el) {
+                return $(el).prop('disabled') === true;
+            }).attr('disabled', false);
+            target.attr('disabled', true);
+        }
+    }, {
+        key: 'setActiveContentList',
+        value: function setActiveContentList(index) {
+            this.clearActive(this.contentList);
+            this.contentList.eq(index).addClass('active');
+        }
+    }, {
+        key: 'clearActive',
+        value: function clearActive(elements) {
+            this.getActiveElement(elements).removeClass('active');
+        }
+    }, {
+        key: 'getActiveElement',
+        value: function getActiveElement(elements) {
+            return elements.filter(function (i, el) {
+                return $(el).hasClass('active');
+            });
+        }
+    }, {
+        key: 'setActivePosition',
+        value: function setActivePosition(marginContainer) {
+            this.contentControls.animate({
+                'margin-top': marginContainer
+            });
+        }
+    }]);
+
+    return Slider;
+}();
+
+var slider = exports.slider = new Slider($('.slider-action'));
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
 
 /***/ }),
