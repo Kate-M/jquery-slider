@@ -122,7 +122,7 @@ var Slider = exports.Slider = function () {
         this.mainList = this.root.find(this.mainControls).find('ul.list');
         this.mainBtns = this.root.find('button.btn-main');
         this.contentBtns = this.root.find('button.btn-content');
-        this.sliderContent = this.root.find('div.slide-content');
+        this.sliderContent = this.root.find('div.slide');
 
         this.setActiveSlide = this.setActiveSlide.bind(this);
         this.setContent = this.setContent.bind(this);
@@ -144,16 +144,8 @@ var Slider = exports.Slider = function () {
             var currentIndex = $targetBtn.parent().index();
             this.setActiveBtn(this.mainBtns, $targetBtn);
             this.setActiveContentList(currentIndex);
-            this.setActivePosition(-(this.slideHeight * currentIndex));
+            this.setContentPosition(-(this.slideHeight * currentIndex));
             this.setDefaultContent(this.contentList);
-        }
-    }, {
-        key: 'setContent',
-        value: function setContent(event) {
-            event.preventDefault();
-            var $targetContentBtn = $(event.currentTarget);
-            this.sliderContent.text($targetContentBtn.text());
-            this.setActiveBtn(this.contentBtns, $targetContentBtn);
         }
     }, {
         key: 'setDefaultParam',
@@ -171,8 +163,17 @@ var Slider = exports.Slider = function () {
         key: 'setDefaultContent',
         value: function setDefaultContent(element) {
             var currentContent = this.getActiveElement(element).find('li.item:first-child').find(this.contentBtns);
-            this.sliderContent.text(currentContent.text());
+            this.sliderContent.html('<div class="item">' + currentContent.text() + '</div>');
             this.setActiveBtn(this.contentBtns, currentContent);
+        }
+    }, {
+        key: 'setContent',
+        value: function setContent(event) {
+            event.preventDefault();
+            var $targetContentBtn = $(event.currentTarget);
+            var currentSlide = $('<div class="item">' + $targetContentBtn.text() + '</div>').appendTo(this.sliderContent);
+            this.setSlidePosition(currentSlide.prev());
+            this.setActiveBtn(this.contentBtns, $targetContentBtn);
         }
     }, {
         key: 'setActiveBtn',
@@ -203,10 +204,19 @@ var Slider = exports.Slider = function () {
             });
         }
     }, {
-        key: 'setActivePosition',
-        value: function setActivePosition(marginContainer) {
+        key: 'setContentPosition',
+        value: function setContentPosition(marginContainer) {
             this.contentControls.animate({
                 'margin-top': marginContainer
+            });
+        }
+    }, {
+        key: 'setSlidePosition',
+        value: function setSlidePosition(slide) {
+            slide.animate({
+                'margin-left': '-100%'
+            }, function () {
+                slide.remove();
             });
         }
     }]);
