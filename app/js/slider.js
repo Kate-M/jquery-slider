@@ -14,6 +14,7 @@ export class Slider {
     }
     setActiveSlide(event) {
         event.preventDefault();
+        $(event.currentTarget).unbind('click');
         let $targetBtn = $(event.target);
         let currentIndex = $targetBtn.parent().index();
         this.setActiveBtn(this.mainControls, $targetBtn);
@@ -26,32 +27,31 @@ export class Slider {
         this.slideHeight = this.contentControls.children().first()
             .outerHeight(true);
         this.mainControls.find('li.item:first-child .btn')
-            .addClass('active')
-            .attr('disabled', true);
+            .addClass('active');
         this.contentList.first().addClass('active');
         this.setDefaultContent(this.contentList);
     }
     setDefaultContent(element) {
         let currentContent = this.getActiveElement(element)
             .find('li.item:first-child .btn');
-        this.sliderContent.html(`<div class="item">${currentContent.text()}</div>`);    
+        this.sliderContent.html(`<div class="item">${currentContent.text()}</div>`);
         this.setActiveBtn(this.contentControls, currentContent);
     }
     setContent(event) {
         event.preventDefault();
+        $(event.currentTarget).unbind('click');
         let $targetContentBtn = $(event.target);
-        let currentSlide = $(`<div class="item">${$targetContentBtn.text()}</div>`)
-            .appendTo(this.sliderContent);
-        this.setSlidePosition(currentSlide.prev());
+        if (!$targetContentBtn.hasClass('active')) {
+            this.currentSlide = $(`<div class="item">${$targetContentBtn.text()}</div>`)
+                .appendTo(this.sliderContent).prev();
+        }
+        this.setSlidePosition(this.currentSlide);
         this.setActiveBtn(this.contentControls, $targetContentBtn);
     }
     setActiveBtn(elements, target) {
         let $btnList = elements.find('.btn');
         this.clearActive($btnList);
         target.addClass('active');
-        $btnList.filter((i, el) => $(el).prop('disabled') === true)
-            .attr('disabled', false);
-        target.attr('disabled', true);
     }
     setActiveContentList(index) {
         this.clearActive(this.contentList);
@@ -67,13 +67,16 @@ export class Slider {
     setContentPosition(marginContainer) {
         this.contentControls.animate({
             'margin-top': marginContainer
-        });
+        }, () =>
+            this.mainControls.on('click', this.setActiveSlide.bind(this))
+        );
     }
     setSlidePosition(slide) {
         slide.animate({
             'margin-left': '-100%'
         }, () => {
             slide.remove();
+            this.contentControls.on('click', this.setContent.bind(this));
         });
     }
 }

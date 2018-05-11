@@ -137,6 +137,7 @@ var Slider = exports.Slider = function () {
         key: 'setActiveSlide',
         value: function setActiveSlide(event) {
             event.preventDefault();
+            $(event.currentTarget).unbind('click');
             var $targetBtn = $(event.target);
             var currentIndex = $targetBtn.parent().index();
             this.setActiveBtn(this.mainControls, $targetBtn);
@@ -149,7 +150,7 @@ var Slider = exports.Slider = function () {
         value: function setDefaultParam() {
             this.contentControls.height(this.mainList.height());
             this.slideHeight = this.contentControls.children().first().outerHeight(true);
-            this.mainControls.find('li.item:first-child .btn').addClass('active').attr('disabled', true);
+            this.mainControls.find('li.item:first-child .btn').addClass('active');
             this.contentList.first().addClass('active');
             this.setDefaultContent(this.contentList);
         }
@@ -164,9 +165,12 @@ var Slider = exports.Slider = function () {
         key: 'setContent',
         value: function setContent(event) {
             event.preventDefault();
+            $(event.currentTarget).unbind('click');
             var $targetContentBtn = $(event.target);
-            var currentSlide = $('<div class="item">' + $targetContentBtn.text() + '</div>').appendTo(this.sliderContent);
-            this.setSlidePosition(currentSlide.prev());
+            if (!$targetContentBtn.hasClass('active')) {
+                this.currentSlide = $('<div class="item">' + $targetContentBtn.text() + '</div>').appendTo(this.sliderContent).prev();
+            }
+            this.setSlidePosition(this.currentSlide);
             this.setActiveBtn(this.contentControls, $targetContentBtn);
         }
     }, {
@@ -175,10 +179,6 @@ var Slider = exports.Slider = function () {
             var $btnList = elements.find('.btn');
             this.clearActive($btnList);
             target.addClass('active');
-            $btnList.filter(function (i, el) {
-                return $(el).prop('disabled') === true;
-            }).attr('disabled', false);
-            target.attr('disabled', true);
         }
     }, {
         key: 'setActiveContentList',
@@ -201,17 +201,24 @@ var Slider = exports.Slider = function () {
     }, {
         key: 'setContentPosition',
         value: function setContentPosition(marginContainer) {
+            var _this = this;
+
             this.contentControls.animate({
                 'margin-top': marginContainer
+            }, function () {
+                return _this.mainControls.on('click', _this.setActiveSlide.bind(_this));
             });
         }
     }, {
         key: 'setSlidePosition',
         value: function setSlidePosition(slide) {
+            var _this2 = this;
+
             slide.animate({
                 'margin-left': '-100%'
             }, function () {
                 slide.remove();
+                _this2.contentControls.on('click', _this2.setContent.bind(_this2));
             });
         }
     }]);
