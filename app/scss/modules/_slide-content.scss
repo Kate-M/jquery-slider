@@ -1,6 +1,21 @@
 .slide-content {
-    background: #78EAD3;
-    padding: 10px;
-    color:#333333;
     flex: 2 2;
+    overflow: auto;
+
+    .slide {
+        width: 100%;
+        height: 100%;
+        display: flex;
+    }
+    .item {
+        width:100%;
+        height: 100%;
+        background: #78EAD3;
+        padding: 10px;
+        color:#333333;
+        flex: 0 0 100%;
+        &:not(:last-child) {
+            margin-right: 10px;
+        }
+    }
 }
