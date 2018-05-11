@@ -184,9 +184,14 @@ var Slider = exports.Slider = function () {
     }, {
         key: 'clearActive',
         value: function clearActive(elements) {
-            elements.filter(function (i, el) {
+            this.getActiveElement(elements).removeClass('active');
+        }
+    }, {
+        key: 'getActiveElement',
+        value: function getActiveElement(elements) {
+            return elements.filter(function (i, el) {
                 return $(el).hasClass('active');
-            }).removeClass('active');
+            });
         }
     }, {
         key: 'setContentPosition',

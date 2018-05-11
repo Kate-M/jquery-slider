@@ -55,14 +55,17 @@ export class Slider {
         target.addClass('active');
     }
     clearActive(elements) {
-        elements.filter((i, el) =>
-            $(el).hasClass('active')).removeClass('active');
+        this.getActiveElement(elements).removeClass('active');
+    }
+    getActiveElement(elements) {
+        return elements.filter((i, el) =>
+            $(el).hasClass('active'));
     }
     setContentPosition(marginContainer) {
         this.contentControls.animate({
             'margin-top': marginContainer
         }, () =>
-            this.mainControls.on('click', this.setActiveSlide.bind(this))
+                this.mainControls.on('click', this.setActiveSlide.bind(this))
         );
     }
     setSlidePosition(slide) {
