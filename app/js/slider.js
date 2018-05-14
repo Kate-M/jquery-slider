@@ -35,7 +35,7 @@ export class Slider {
     setDefaultContent(element) {
         let currentContent = this.getActiveElement(element)
             .find('li.item:first-child .btn');
-        this.sliderContent.html(`<div class="item">${currentContent.text()}</div>`);
+        this.sliderContent.empty().append(`<div class="item">${currentContent.text()}</div>`);
         this.setActiveBtn(this.contentControls, currentContent);
     }
     setContent(event) {

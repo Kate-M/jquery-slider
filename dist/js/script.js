@@ -159,7 +159,7 @@ var Slider = exports.Slider = function () {
         key: 'setDefaultContent',
         value: function setDefaultContent(element) {
             var currentContent = this.getActiveElement(element).find('li.item:first-child .btn');
-            this.sliderContent.html('<div class="item">' + currentContent.text() + '</div>');
+            this.sliderContent.empty().append('<div class="item">' + currentContent.text() + '</div>');
             this.setActiveBtn(this.contentControls, currentContent);
         }
     }, {
